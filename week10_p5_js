@@ -1,0 +1,133 @@
+int stage=1;
+int timecount=120;
+int playerJ=0, playerI=2;
+int monsterJ,monsterI;
+
+
+PImage p1;
+void setup()
+{
+  size(1280,720);
+  PFont font=createFont("標楷體",36);
+  textFont(font);
+}
+
+void draw()
+{
+  background(255,255,255);
+  fill(0,0,0);
+  
+  if(stage==1)
+  {
+    text("按下 s ，即可開始遊戲",400,330);
+  }
+  else if(stage==2)
+  {
+    //text("Start",100,100);
+    if(timecount<=0){
+      background(255,0,0); //紅色
+      textSize(80);
+      fill(0,255,255);  //藍色
+      text("Game Over",500,330);
+    }
+    else{
+      background(255,255,255);
+      timecount--;
+    }
+    textSize(36);
+    text("Time："+int(timecount/60),50,50);
+    for (int x=100; x<=1200; x+=100) {
+      line( x, 100, x, 600);
+    }
+    for (int y=100; y<=600; y+=100) {
+      line( 100, y, 1200, y);
+    }
+    int playerX=playerJ*50+100;
+    int playerY=playerI*50-20;
+    //ellipse(playerX,playerY,50,50);
+    p1=loadImage("plan.png");
+    p1.resize(100,150);
+    image(p1,playerX,playerY);
+   
+    //殭屍1
+    float monsterX=monsterJ*50+1100;
+    float monsterY=monsterI*50+100;
+    p1=loadImage("bad1.png");
+    p1.resize(100,100);
+    image(p1,monsterX,monsterY);
+    for(int i=500;i>0;i--){
+ 
+      monsterX--;
+      image(p1,monsterX,monsterY);
+    }
+
+    //殭屍2
+    float monsterX1=monsterJ*50+1100;
+    float monsterY1=monsterI*50+200;
+    p1=loadImage("bad2.png");
+    p1.resize(100,100);
+    image(p1,monsterX1,monsterY1);
+    
+    //殭屍3
+    float monsterX2=monsterJ*50+1100;
+    float monsterY2=monsterI*50+300;
+    p1=loadImage("bad3.png");
+    p1.resize(100,100);
+    image(p1,monsterX2,monsterY2);
+    
+    //殭屍4
+    float monsterX3=monsterJ*50+1100;  ///座標 殘影 音樂需更改 背景
+    float monsterY3=monsterI*50+400;
+    p1=loadImage("bad4.png");
+    p1.resize(100,100);
+    image(p1,monsterX3,monsterY3);
+    //殭屍5
+    float monsterX4=monsterJ*50+1100;
+    float monsterY4=monsterI*50+500;
+    p1=loadImage("bad5.png");
+    p1.resize(100,100);
+    image(p1,monsterX4,monsterY4);
+    
+    
+  }
+  else if(stage==3)
+  {
+    //background(255,255,255);
+    //fill(0,0,0);
+    text("按下 r 即可重新開始",500,330);
+  }
+  
+}
+
+
+
+void mousePressed()
+{
+  if(timecount<=0)stage=3; //要改！
+}
+
+void keyPressed()
+{
+  if(key=='s'){
+    if(stage==1)stage=2; //切換到遊戲畫面
+    timecount=1200;
+  }
+  if(key=='r'){
+    if(stage==3)stage=1; //切換到遊戲畫面
+  }
+  if(keyCode==RIGHT ) playerJ+=2;
+  if(keyCode==LEFT ) playerJ-=2;
+  if(keyCode==DOWN ) playerI+=2;
+  if(keyCode==UP ) playerI-=2;
+}
+
+void mouseMoved(MouseEvent e) {
+// 當遊戲處於執行狀態時
+  if (stage == 2) { // 通過滑鼠移動事件的物件獲取當前滑鼠的位置
+    int x = e.getX();             
+    int y = e.getY();  // 如果滑鼠超出了遊戲介面  //修
+    if (x > 1280 || y > 720) {      // 將遊戲的狀態改為暫停狀態
+      stage = 4;
+    }
+   }
+}
